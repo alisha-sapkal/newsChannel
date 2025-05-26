@@ -57,22 +57,16 @@ function Header() {
             <div className="text-white text-center py-1 px-3 bg-danger" style={{ width: "100px" }}>
               Trending
             </div>
-            <div className="d-flex flex-grow-1 align-items-center ml-3 overflow-hidden position-relative">
-              <button className="btn btn-sm btn-light mr-1" onClick={handlePrev}>
-                <i className="fa fa-angle-left" />
-              </button>
-              <div
-                className={`text-truncate flex-grow-1 text-center ${
-                  direction === "right" ? "slide-right" : "slide-left"
-                }`}
-              >
-                <Link to={links[currentIndex].to} className="text-secondary">
-                  {links[currentIndex].text}
-                </Link>
+            <div className="d-flex flex-grow-1 align-items-center ml-3 overflow-hidden position-relative" style={{ minHeight: 38 }}>
+              <div className="infinite-scroll-wrapper">
+                {[...links, ...links].map((link, idx) => (
+                  <span key={idx} className="infinite-scroll-item">
+                    <Link to={link.to} className="text-secondary mx-4">
+                      {link.text}
+                    </Link>
+                  </span>
+                ))}
               </div>
-              <button className="btn btn-sm btn-light ml-1" onClick={handleNext}>
-                <i className="fa fa-angle-right" />
-              </button>
             </div>
           </div>
           <div className="col-md-4 text-right d-none d-md-block">

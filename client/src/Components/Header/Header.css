@@ -44,6 +44,27 @@
   }
 }
 
+.infinite-scroll-wrapper {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: infiniteScroll 16s linear infinite;
+}
+
+.infinite-scroll-item {
+  display: inline-block;
+  min-width: 350px; /* Adjust based on your content */
+}
+
+@keyframes infiniteScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* @media (max-width: 1200px) {
   .head .row {
     flex-wrap: wrap;

@@ -31,6 +31,8 @@ function Home() {
   const [technology, setTechnology] = useState([]);
   const [market, setMarket] = useState([]);
 
+  const [mainSliderIndex, setMainSliderIndex] = useState(0);
+
   useEffect(() => {
     fetch(
       "http://localhost:3000/api/searcharticles?articleType=random&num=3&randomsize=true"
@@ -122,14 +124,27 @@ function Home() {
         console.error("Error fetching data:", error);
       });
 
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    const items = scrollContainer.querySelectorAll(".image-carousel-item");
+    const imageCount = items.length;
+    if (imageCount === 0) return;
+
+    const itemWidth = items[0].offsetWidth;
+
+    let currentIndex = 0;
+
     const interval = setInterval(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollBy({
-          left: 100,
-          behavior: "smooth",
-        });
-      }
-    }, 3000);
+      currentIndex = (currentIndex + 1) % imageCount; // Loop back to 0 when at the end
+
+      scrollContainer.scrollTo({
+        left: currentIndex * itemWidth,
+        behavior: "smooth",
+      });
+
+      setMainSliderIndex(currentIndex);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, []);
@@ -150,7 +165,6 @@ function Home() {
   return (
     <>
       <Header className="header" />
-      {/* Top News Slider Starts */}
       <div className="home-content">
         <div className="container-fluid py-3">
           <div className="container">
@@ -271,8 +285,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Top News Slider End */}
-      {/* Main News Slider Start */}
       <div className="container-fluid py-3">
         <div className="row">
           <div className="col-lg-8 mb-4">
@@ -286,7 +298,10 @@ function Home() {
                 }}
                 ref={scrollRef}
               >
-                <div className="image-carousel-item position-relative flex-shrink-0">
+                <div
+                  className="image-carousel-item position-relative flex-shrink-0"
+                  style={{ width: "100%" }}
+                >
                   <div className="image-wrapper">
                     <img
                       src={news_700x435_1}
@@ -317,7 +332,10 @@ function Home() {
                     </div>
                   </div>
                 </div>
-                <div className="image-carousel-item position-relative flex-shrink-0">
+                <div
+                  className="image-carousel-item position-relative flex-shrink-0"
+                  style={{ width: "100%" }}
+                >
                   <div className="image-wrapper">
                     <img
                       src={news_700x435_2}
@@ -418,8 +436,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Main News Slider End */}
-      {/* Featured News Slider Start */}
       <div className="container-fluid py-3">
         <div className="container-f">
           <div className="container">
@@ -545,8 +561,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Featured News Slider End */}
-      {/* Category News Slider Start */}
       <div className="sctn">
         <div className="container-fluid">
           <div className="container">
@@ -781,8 +795,6 @@ function Home() {
         </div>
       </div>
 
-      {/* Category News Slider End */}
-      {/* News With Sidebar Start */}
       <div className="last" style={{ marginLeft: "-1rem" }}>
         <div className="container-fluid py-3">
           <div className="container">
@@ -1112,7 +1124,7 @@ function Home() {
                             </span>
                           </div>
                           <p
-                            className="h6 m-0"
+                            className="m-0"
                             style={{ width: "100%", fontSize: "10px" }}
                           >
                             {expandedArticles[article.id]
@@ -1218,7 +1230,7 @@ function Home() {
                             </span>
                           </div>
                           <p
-                            className="h6 m-0"
+                            className="m-0"
                             style={{ width: "100%", fontSize: "10px" }}
                           >
                             {expandedArticles[article.id]
@@ -1248,10 +1260,7 @@ function Home() {
                 className="col-lg-4 pt-3 pt-lg-0"
                 style={{ marginLeft: "-1rem" }}
               >
-                {/* Social Follow Start */}
-
                 <div className="col-lg-12 pt-3 pt-lg-0">
-                  {/* Social Follow Start */}
                   <div className="pb-3">
                     <div className="bg-light py-2 px-4 mb-3">
                       <h3 className="m-0">Follow Us</h3>
@@ -1311,9 +1320,6 @@ function Home() {
                       </a>
                     </div>
                   </div>
-                  {/* Social Follow End */}
-
-                  {/* Newsletter Start */}
                   <div className="pb-3">
                     <div className="bg-light py-2 px-4 mb-3">
                       <h3 className="m-0">Newsletter</h3>
@@ -1336,17 +1342,11 @@ function Home() {
                       <small>Sit eirmod nonumy kasd eirmod</small>
                     </div>
                   </div>
-                  {/* Newsletter End */}
-
-                  {/* Ads Start */}
                   <div className="mb-3 pb-3">
                     <a href="">
                       <img className="img-fluid" src={news_500x280_4} alt="" />
                     </a>
                   </div>
-                  {/* Ads End */}
-
-                  {/* Popular News Start */}
                   <div className="pb-3">
                     <div className="bg-light py-2 px-4 mb-3">
                       <h3 className="m-0">Trending</h3>
@@ -1414,11 +1414,8 @@ function Home() {
                       </div>
                     ))}
                   </div>
-                  {/* Popular News End */}
                 </div>
 
-                {/* Popular News End */}
-                {/* Tags Start */}
                 <div className="pb-3">
                   <div className="bg-light py-2 px-4 mb-3">
                     <h3 className="m-0">Tags</h3>
@@ -1462,8 +1459,6 @@ function Home() {
                     </a>
                   </div>
                 </div>
-
-                {/* Tags End */}
               </div>
             </div>
           </div>
